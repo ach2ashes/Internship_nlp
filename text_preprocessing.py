@@ -63,10 +63,7 @@ file = 'C:/Users/PC2/Downloads/test-ex.txt'
 f=open(file,'r')
 data = f.read()
 print(text_preprocessing(data,lang='french'))
-
 #Now we ll do preprocessing using mainly spacy
-from spacy.lang.fr import French
-from spacy.lang.en import English
 import spacy
 #load only french and english models tokenizers
 nlp_en = spacy.load("en_core_web_sm", disable=['parser', 'tagger', 'ner'])
