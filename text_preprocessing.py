@@ -60,7 +60,7 @@ def text_preprocessing(text,accented=True,stopw=True,punctuation=True,lowercase=
     if lemmatize:
         #lemmatization : 
         tokens = [lemmatizer.lemmatize(token) for token in tokens]
-    return ' '.join(word for word in tokens)
+    return tokens
 
     #Some tests:
 file = 'C:/Users/PC2/Downloads/test-ex.txt'

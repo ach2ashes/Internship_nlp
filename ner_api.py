@@ -11,7 +11,6 @@ def root():
 def get_entites(text):
     """
     Text is the text from wich we extract the entities
-    params : a list of boolean to determine the filters we want to activate("accented","stopw","punctuation","lowercase","lemmatize","spelling","expand_contraction","urls")in the order
     """ 
     preprocessed_text = text_preprocessing(text)
     ents = ner_spacy(preprocessed_text)[0]
