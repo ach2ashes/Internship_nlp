@@ -1,9 +1,9 @@
 # Import Libraries
-import re
 import fitz
 from text_preprocessing import ner_spacy
+from spacy import displacy
+from pathlib import Path
 
-list_of_colors = ["red","blue","green","yellow","cyan","brown","pink","magenta","orange"]
 #extract text from pdf
 def extract_text(input_file):
     doc = fitz.open(input_file)
@@ -18,27 +18,21 @@ def find_ent(input_file):
     return text_ents
 
 #highlight entities in pages
-def highlight_ent(page , matching_ents,color_map):
-    for ent in matching_ents:
-        matching_val_area = page.search_for(ent.text)
-        highlight = page.addHighlightAnnot(matching_val_area)
-        highlight.set_colors(colors= fitz.utils.getColor(color_map[ent.label_]))
-        info = highlight.info
-        info["title"] = ent.label_
-        info["content"] = ent.label_
-        highlight.set_info(info)
-        highlight.update()
-    return "highliting done"
+def highlight_ent(text):
+    html = displacy.render(text, style="ent",jupyter=False,page = True)
+    return html
 #final function
 def output(input_file):
     doc=fitz.open(input_file)
     text = extract_text(input_file)
     text_ents = find_ent(input_file)
-    labels = ner_spacy(text[0])[1]
-    color_map = dict(zip(labels, list_of_colors[:len(labels)]))
-    i=0
-    for page in doc:
-        highlight_ent(page,text_ents[i],color_map)
-        i+=1
-    doc.save("output.pdf", garbage=4, deflate=True, clean=True)
-    return "updated pdf"
+    svg=highlight_ent(text_ents)
+    output_path = Path("output.html")
+    output_path.open("w", encoding="utf-8").write(svg)
+    return "created html"
+
+input_file="C:\\Users\\PC2\\Downloads\\yanni.pdf"
+output(input_file)   
+#convert to pdf 
+import pdfkit # to run this we need to install wkhtmltopdf and set up environnement variables
+pdfkit.from_file('output.html', 'out.pdf')
