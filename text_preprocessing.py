@@ -124,7 +124,7 @@ def ner_spacy(text):
     else:
         ner  = spacy.load("fr_core_news_sm",disable=["tagger","parser"])
     labels = ner.get_pipe("ner").labels
-    return ner(text).ents,labels
+    return ner(text),labels
 
 
 
