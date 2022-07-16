@@ -1,9 +1,6 @@
 # Import Libraries
-import re
 import fitz
 from text_preprocessing import ner_spacy
-
-list_of_colors = ["red","blue","green","yellow","cyan","brown","pink","magenta","orange"]
 #extract text from pdf
 def extract_text(input_file):
     doc = fitz.open(input_file)
@@ -22,7 +19,6 @@ def highlight_ent(page , matching_ents,color_map):
     for ent in matching_ents:
         matching_val_area = page.search_for(ent.text)
         highlight = page.addHighlightAnnot(matching_val_area)
-        highlight.set_colors(colors= fitz.utils.getColor(color_map[ent.label_]))
         info = highlight.info
         info["title"] = ent.label_
         info["content"] = ent.label_
