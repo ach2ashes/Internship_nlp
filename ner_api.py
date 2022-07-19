@@ -19,7 +19,7 @@ def get_entites(text):
     ents.extends(find_imo(text))
     ents.extends(find_swift(text))
     return {"text":text,"entities":[(ent.text,ent.label_) for ent in ents]}
-@app.get("/highlighted_pdf/{pdf}")
+@app.get("/highlighted_pdf")
 def highlight_pdf(pdf:str):
     pdf =base64_to_pdf(pdf)
     ents,highlighted_pdf = output(pdf)
