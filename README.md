@@ -37,4 +37,4 @@ cette fonction prend en argument le chemin vers un fichier pdf , extrait les ent
 #### get_entities(text)
 Prend un texte(String) et retourne ses entités
 #### highlight_pdf(pdf)
-Prend le pdf encodé en base64 et retourne le pdf highlighté encodé en base64 ainsi que les entités détectées
+Prend le pdf encodé en base64 et retourne le pdf highlighté encodé en base64 ainsi que les entités détectées sous format :    # positions format: a dict containing entities as keys, and the values a list of tuples:(list of Rect positions,page number)

@@ -1,6 +1,6 @@
 from text_preprocessing import spacy_preprocessing, detect
 import spacy
-
+from spacy_lookup import Entity
 def ner_spacy(text):
     if detect(text) == "en":
         ner  = spacy.load("en_core_web_sm",disable=["tagger","parser"])
@@ -85,3 +85,17 @@ def find_imo(text):
         if check_imo_funct(num):
             imos.append(ent)
     return imos
+#ner with dicts
+def ner_with_dict(text,keywords,label):
+    """if keywords is dict it the values should be lists"""
+    if detect(text) == "en":
+        nlp  = spacy.load("en_core_web_sm",disable=["tagger","parser","ner"])
+    else:
+        nlp  = spacy.load("fr_core_news_sm",disable=["tagger","parser","ner"])
+    doc = nlp(text)
+    if type(keywords)==list:
+        entity = Entity(keywords_list=keywords,label=label)
+    elif type(keywords)== dict :
+        entity = Entity(keywords_dict=keywords,label=label)
+    nlp.add_pipe(entity, last=True)
+    return doc.ents

@@ -22,16 +22,18 @@ def find_ent(input_file):
     return text_ents
 
 #highlight entities in pages
-def highlight_ent(page , matching_ents):
+def highlight_ent(page ,page_no, matching_ents):
+    positions_dict = {}
     for ent in matching_ents:
         matching_val_area = page.search_for(ent.text)
+        positions_dict[ent] =(matching_val_area,page_no)
         highlight = page.addHighlightAnnot(matching_val_area)
         info = highlight.info
         info["title"] = ent.label_
         info["content"] = ent.label_
         highlight.set_info(info)
         highlight.update()
-    return "highliting done"
+    return positions_dict
 #pdf to base64
 def pdf_to_base64(pdf):
     with open(pdf, "rb") as pdf_file:
@@ -47,8 +49,14 @@ def output(input_file):
     doc=fitz.open(input_file)
     text_ents = find_ent(input_file)
     i=0
+    positions = {}
     for page in doc:
-        highlight_ent(page,text_ents[i])
+        for ent in text_ents[i]:
+            if ent not in positions.keys():
+                positions[ent] =[]
+        part_pos=highlight_ent(page,i+1,text_ents[i])
         i+=1
+        for entity,pos in part_pos.items():
+            positions[entity].append(pos)
     doc.save("output.pdf", garbage=4, deflate=True, clean=True)
-    return text_ents,".//ouput.pdf"
+    return ".//ouput.pdf",positions

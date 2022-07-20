@@ -22,7 +22,9 @@ def get_entites(text):
 @app.get("/highlighted_pdf")
 def highlight_pdf(pdf:str):
     pdf =base64_to_pdf(pdf)
-    ents,highlighted_pdf = output(pdf)
+    highlighted_pdf,positions = output(pdf)
     highlighted_pdf_base64 = pdf_to_base64(highlighted_pdf)
-    return {"highlighted pdf":highlighted_pdf_base64,"entities":ents}
+    # positions format: a dict containing entities as keys, and the values a list of tuples:(list of Rect positions,page number)
+    return {"highlighted pdf":highlighted_pdf_base64,"entities":positions}
+
 
