@@ -1,6 +1,8 @@
 from text_preprocessing import spacy_preprocessing, detect
 import spacy
-from spacy_lookup import Entity
+from spaczz.pipeline import SpaczzRuler
+import pandas as pd
+from sqlalchemy import create_engine
 def ner_spacy(text):
     if detect(text) == "en":
         ner  = spacy.load("en_core_web_sm",disable=["tagger","parser"])
@@ -86,16 +88,36 @@ def find_imo(text):
             imos.append(ent)
     return imos
 #ner with dicts
-def ner_with_dict(text,keywords,label):
-    """if keywords is dict it the values should be lists"""
+def fuzzy_ner(text,keywords:dict):
     if detect(text) == "en":
-        nlp  = spacy.load("en_core_web_sm",disable=["tagger","parser","ner"])
+        nlp = spacy.load("en_core_web_sm",disable=["tagger","parser","ner"])
     else:
         nlp  = spacy.load("fr_core_news_sm",disable=["tagger","parser","ner"])
-    doc = nlp(text)
-    if type(keywords)==list:
-        entity = Entity(keywords_list=keywords,label=label)
-    elif type(keywords)== dict :
-        entity = Entity(keywords_dict=keywords,label=label)
-    nlp.add_pipe(entity, last=True)
+
+    doc  = nlp(text) 
+    patterns=[]
+    for key,value in keywords.items():
+            if type(value)==list:
+                for v in value:
+                    patterns.append({"label":key,"pattern":v,"type":"fuzzy"})
+            else:
+                patterns.append({"label":key,"pattern":value,"type":"fuzzy"})
+
+    ruler = SpaczzRuler(nlp)
+    ruler.add_patterns(patterns)
+    doc = ruler(doc)
     return doc.ents
+
+def ner_dicts(text,db,table):
+    """
+    db format : 'postgresql://user:password@host:port/db'
+    """
+    engine = create_engine(db)
+    df = pd.read_sql("SELECT * FROM {}".format(table),con=engine)
+    df.drop("index",axis=1,inplace=True)
+    df = df.reindex(columns=["Type","name"])
+    entity_list=dict(df.values)
+    return fuzzy_ner(text,entity_list)
+    
+
+    
