@@ -26,7 +26,7 @@ def remove_accented_chars(text):
     return new_text
 
 
-def text_preprocessing(text,accented=True,stopw=True,punctuation=True,lowercase=True,lemmatize=True,spelling=True,expand_contraction=True,urls=True):
+def text_preprocessing(text,accented=False,stopw=False,punctuation=False,lowercase=False,lemmatize=False,spelling=False,expand_contraction=False,urls=False):
     if detect(text)=='en':
         stopword =stopwords.words('english')
         lemmatizer = WordNetLemmatizer()

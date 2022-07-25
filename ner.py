@@ -4,10 +4,8 @@ from spaczz.pipeline import SpaczzRuler
 import pandas as pd
 from sqlalchemy import create_engine
 def ner_spacy(text):
-    if detect(text) == "en":
-        ner  = spacy.load("en_core_web_sm",disable=["tagger","parser"])
-    else:
-        ner  = spacy.load("fr_core_news_sm",disable=["tagger","parser"])
+    ner  = spacy.load("en_core_web_sm")
+    text = spacy_preprocessing(text,lowercase=True,lemmatize=True)
     labels = ner.get_pipe("ner").labels
     return ner(text).ents,labels
 
@@ -23,7 +21,7 @@ def find_swift(text):
         ruler = nlp.add_pipe("entity_ruler",after="ner")
     else:
         ruler= nlp.get_pipe("entity_ruler")
-    text = spacy_preprocessing(text)
+    text = spacy_preprocessing(text,lowercase=True,lemmatize=True)
     # we use spacy s entity ruler for matching
     patterns =[
         ## uppercases will be lower after preprocessing

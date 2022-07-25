@@ -1,6 +1,6 @@
 # Import Libraries
 import fitz
-from ner import ner_spacy , find_imo,find_swift
+from ner import ner_spacy , find_imo,find_swift,ner_dicts
 import base64
 #extract text from pdf
 def extract_text(input_file):
@@ -18,6 +18,7 @@ def find_ent(input_file):
         page_ents.extend(ner_spacy(txt)[0]) #ner_spacy(txt)[0]:entities
         page_ents.extend(find_imo(txt))
         page_ents.extend(find_swift(txt))
+        page_ents.extend(ner_dicts(txt,"postgresql://postgres:achraf@localhost:5432/ner_dicts","ports_banks_ships"))
         text_ents.append(page_ents)
     return text_ents
 
