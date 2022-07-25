@@ -14,7 +14,7 @@ def get_entites(text):
     Text is the text from wich we extract the entities
     """ 
     preprocessed_text = text_preprocessing(text)
-    ents = ner_spacy(preprocessed_text)[0]
+    ents = list(ner_spacy(preprocessed_text)[0])
     ents.extend(find_imo(text))
     ents.extend(find_swift(text))
     ents.extend(ner_dicts(text,"postgresql://postgres:achraf@localhost:5432/ner_dicts","ports_banks_ships"))
