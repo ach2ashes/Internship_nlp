@@ -1,6 +1,6 @@
 # Import Libraries
 import fitz
-from ner import ner_spacy , find_imo,find_swift,ner_dicts
+from myner.ner import ner_spacy , find_imo,find_swift,ner_dicts
 import base64
 #extract text from pdf
 def extract_text(input_file):

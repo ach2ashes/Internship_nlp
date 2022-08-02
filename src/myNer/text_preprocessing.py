@@ -97,9 +97,7 @@ def spacy_preprocessing(text,lowercase=True,stopw=True,punctuation=True,alphabet
         tokens = [re.sub('[\W]+','',token) for token in tokens]
     return ' '.join(word for word in tokens)
 
-file = 'C:/Users/PC2/Downloads/test-ex.txt'
-f=open(file,'r')
-data = f.read()
+
 #print(spacy_preprocessing(data,lowercase=False))
 
 

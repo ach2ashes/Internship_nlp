@@ -1,7 +1,7 @@
 from fastapi import FastAPI 
-from text_preprocessing import text_preprocessing 
-from ner import ner_spacy,find_imo,find_swift,ner_dicts
-from highlight_pdf import output,base64_to_pdf,pdf_to_base64
+from myner.text_preprocessing import text_preprocessing 
+from myner.ner import ner_spacy,find_imo,find_swift,ner_dicts
+from myner.highlight_pdf import output,base64_to_pdf,pdf_to_base64
 app = FastAPI()
 # Define the default route 
 @app.get("/")

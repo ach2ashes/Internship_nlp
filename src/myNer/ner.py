@@ -1,4 +1,4 @@
-from text_preprocessing import spacy_preprocessing, detect
+from myner.text_preprocessing import spacy_preprocessing, detect
 import spacy
 from spaczz.pipeline import SpaczzRuler
 import pandas as pd
