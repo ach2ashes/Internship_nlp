@@ -52,16 +52,18 @@ Sauf que cette méthode se montre dépendante des données présentes dans la ba
 
 ```python
 from myner import highlight_pdf 
-highlight_pdf.output(input_file)
+highlight_pdf.output(input_file,output_path)
 
 ```
-cette fonction prend en argument le chemin vers un fichier pdf , extrait les entités,les highlight , et enregistre le pdf highlighté dans le dossier courant sous le nom "output.pdf"
+cette fonction prend en argument le chemin vers un fichier pdf , et le chemin de l'output, extrait les entités,les highlight , et enregistre le pdf highlighté dans le dossier courant sous le nom "output.pdf"
 
 Il existe aussi deux fonctions pour l'encodage du pdf en base64 et l'inverse,pour permettre l'interaction avec l'API
 ```python
 highlight_pdf.pdf_to_base64(pdf)
 highlight_pdf.base64_to_pdf(base64)
 ```
+### batch preprocessing:
+highlight_pdf.batch_ner(dir_path): prend le chemin vers un dossier contenant des pdf et execute du batch preprocessing sur ces derniers
 
 
 

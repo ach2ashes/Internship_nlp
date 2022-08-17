@@ -1,4 +1,4 @@
-from myner.text_preprocessing import spacy_preprocessing, detect
+from text_preprocessing import spacy_preprocessing, detect
 import spacy
 from spaczz.pipeline import SpaczzRuler
 import pandas as pd
@@ -13,10 +13,8 @@ def ner_spacy(text):
 
 
 def find_swift(text):
-    if detect(text) == "en":
-        nlp  = spacy.load("en_core_web_sm",disable=["tagger","parser","ner"])
-    else:
-        nlp  = spacy.load("fr_core_news_sm",disable=["tagger","parser","ner"])
+    nlp  = spacy.load("en_core_web_sm",disable=["tagger","parser","ner"])
+    
     if "entity_ruler" not in nlp.pipe_names:
         ruler = nlp.add_pipe("entity_ruler",after="ner")
     else:
@@ -53,10 +51,7 @@ def check_imo_funct(imo_code):
             return False
 
 def find_imo(text):
-    if detect(text) == "en":
-        nlp = spacy.load("en_core_web_sm",disable=["tagger","parser","ner"])
-    else:
-        nlp  = spacy.load("fr_core_news_sm",disable=["tagger","parser","ner"])    
+    nlp = spacy.load("en_core_web_sm",disable=["tagger","parser","ner"])    
     if "entity_ruler" not in nlp.pipe_names:
         ruler = nlp.add_pipe("entity_ruler")
     else:
@@ -87,11 +82,7 @@ def find_imo(text):
     return imos
 #ner with dicts
 def fuzzy_ner(text,keywords:dict):
-    if detect(text) == "en":
-        nlp = spacy.load("en_core_web_sm",disable=["tagger","parser","ner"])
-    else:
-        nlp  = spacy.load("fr_core_news_sm",disable=["tagger","parser","ner"])
-
+    nlp = spacy.load("en_core_web_sm",disable=["tagger","parser","ner"])
     doc  = nlp(text) 
     patterns=[]
     for key,value in keywords.items():

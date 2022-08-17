@@ -11,11 +11,6 @@ import re
 from french_lefff_lemmatizer.french_lefff_lemmatizer import FrenchLefffLemmatizer
 import unicodedata
 from langdetect import detect
-from itertools import chain , combinations
-nltk.download('stopwords')
-nltk.download('punkt')
-nltk.download('words')
-nltk.download('wordnet')
 
 def remove_urls(text):
     url_pattern = re.compile(r'https?://\S+|www\.\S+')
@@ -78,9 +73,12 @@ nlp_en = spacy.load("en_core_web_sm", disable=['parser', 'tagger', 'ner'])
 nlp_fr = spacy.load("fr_core_news_sm", disable=['parser', 'tagger', 'ner'])
 
 def spacy_preprocessing(text,lowercase=True,stopw=True,punctuation=True,alphabetic=True,lemmatize=True,):
-    if detect(text)=="en":
-        nlp = nlp_en
-    else :
+    try: 
+        if detect(text)=="en":
+            nlp = nlp_en
+        else : 
+            nlp = nlp_fr
+    except: 
         nlp = nlp_fr
     if lowercase:
         text = text.lower()
