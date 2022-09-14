@@ -85,6 +85,7 @@ def spacy_preprocessing(text,lowercase=True,stopw=True,punctuation=True,alphabet
     remove_accented_chars(text)
     #tokenize with spacy's default tokenizer
     tokens = nlp(text)
+    
     if stopw :
         tokens = [token for token in tokens if not token.is_stop]
     if lemmatize :

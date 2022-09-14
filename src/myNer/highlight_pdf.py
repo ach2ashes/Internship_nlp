@@ -18,19 +18,24 @@ def extract_text(input_file):
 def find_ent(input_file):
     text_ents  =[]
     for txt in  extract_text(input_file):
+        txt = spacy_preprocessing(txt)
         page_ents = []
+
         page_ents.extend(ner_spacy(txt)[0]) #ner_spacy(txt)[0]:entities
+
         page_ents.extend(find_imo(txt))
         page_ents.extend(find_swift(txt))
         page_ents.extend(ner_dicts(txt,"postgresql://postgres:achraf@localhost:5432/ner_dicts","ports_banks_ships"))
+
         text_ents.append(page_ents)
+    print(text_ents)
     return text_ents
 
 #highlight entities in pages
 def highlight_ent(page ,page_no, matching_ents):
     positions_dict = {}
     for ent in matching_ents:
-        matching_val_area = page.search_for(ent.text)
+        matching_val_area = page.search_for(ent.text.split()[-1])
         positions_dict[ent] =(matching_val_area,page_no)
         highlight = page.addHighlightAnnot(matching_val_area)
         info = highlight.info
